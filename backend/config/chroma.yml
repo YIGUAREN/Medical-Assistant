@@ -1,0 +1,4 @@
+collection_name: medical_knowledge
+persist_directory: chroma_db
+
+rerank_model: "qwen3-rerank"
