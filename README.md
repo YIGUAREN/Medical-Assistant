@@ -163,6 +163,7 @@ curl http://localhost:8001/api/mcp/status
 | **LangChain** | LLM 调用链（ChatPromptTemplate + Runnable） |
 | **ChromaDB** | 轻量级向量数据库（医疗知识库存储） |
 | **通义千问 (DashScope)** | LLM 服务（qwen-max 对话 / text-embedding-v3 嵌入 / qwen3-rerank 重排序） |
+| **Sentence-Transformers** | 可选本地嵌入模型（BAAI/bge-large-zh-v1.5），替代 DashScope 嵌入 |
 | **SQLite** | 会话记忆持久化 |
 | **MCP 协议** | 自研轻量级模块间通信协议 |
 
@@ -271,8 +272,24 @@ data: {"type": "cancelled", "content": "已取消生成"}
 | 模型 | 用途 | 类型 | 配置项 |
 |------|------|------|--------|
 | `qwen-max` | 对话/诊断/分析 | `ChatTongyi` | `DASHSCOPE_API_KEY` |
-| `text-embedding-v3` | 向量嵌入 | `DashScopeEmbeddings` | `DASHSCOPE_API_KEY` |
+| `text-embedding-v3` | 向量嵌入（DashScope） | `DashScopeEmbeddings` | `DASHSCOPE_API_KEY` |
+| `BAAI/bge-large-zh-v1.5` | 向量嵌入（本地） | `HuggingFaceEmbeddings` | 自动下载到本地缓存 |
 | `qwen3-rerank` | 检索重排序 | `TextReRank` | `DASHSCOPE_API_KEY` |
+
+### 嵌入模型切换
+
+通过环境变量 `EMBED_MODEL_TYPE` 切换：
+
+```env
+# 使用阿里云 DashScope API（默认）
+EMBED_MODEL_TYPE=DASHSCOPE
+
+# 使用本地 Sentence-Transformer（无需 API Key）
+EMBED_MODEL_TYPE=SENTENCE_TRANSFORMER
+SENTENCE_TRANSFORMER_MODEL_NAME=BAAI/bge-large-zh-v1.5
+```
+
+首次切换到 `SENTENCE_TRANSFORMER` 时会自动下载模型到 HuggingFace 缓存目录，之后离线可用。
 
 ### 向量数据库配置
 

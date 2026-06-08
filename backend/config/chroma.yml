@@ -2,3 +2,7 @@ collection_name: medical_knowledge
 persist_directory: chroma_db
 
 rerank_model: "qwen3-rerank"
+
+# Sentence-Transformer 模型（当 EMBED_MODEL_TYPE=SENTENCE_TRANSFORMER 时使用）
+# 首次运行会自动下载到 huggingface 缓存目录
+sentence_transformer_model: "BAAI/bge-large-zh-v1.5"
